@@ -1,4 +1,8 @@
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import axios from 'axios';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import useRegisterModal from '@/hooks/useRegisterModal';
 
 import Modal from './Modal';
@@ -6,14 +10,20 @@ import Heading from '../Heading';
 import Input from '../Inputs/Input';
 import Button from '../Button';
 
+const registerUserSchema = yup
+  .object({
+    username: yup.string().required(),
+    email: yup.string().email().required(),
+    password: yup.string().required(),
+  })
+  .required();
+type FormData = yup.InferType<typeof registerUserSchema>;
+
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit } = useForm<FormData>({
+    resolver: yupResolver(registerUserSchema),
     defaultValues: {
       username: '',
       email: '',
@@ -22,37 +32,43 @@ const RegisterModal = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+    console.log('submitted');
+
+    axios
+      .post('http://localhost:5000/v1/auth/register', data)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
       <Heading
-        title='Welcome To Airbnb'
+        title='Welcome To LoftLuxe'
         subtitle='Create an account'
         center={true}
       />
       <Input
-        id='username'
+        name='username'
         label='Username'
         placeholder='username'
-        {...register('username')}
-        errors={errors}
+        control={control}
       />
       <Input
-        id='email'
+        name='email'
         label='Email'
-        placeholder='email'
-        {...register('email')}
-        errors={errors}
+        placeholder='email@gmail.com'
+        control={control}
       />
       <Input
-        id='password'
+        name='password'
         type='password'
         label='Passowrd'
         placeholder='password'
-        {...register('password')}
-        errors={errors}
+        control={control}
       />
     </div>
   );
