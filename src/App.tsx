@@ -1,9 +1,11 @@
-import Navbar from './components/Navbar/Navbar';
+import Layout from '@/components/Layouts/Layout';
+import { Toaster } from 'react-hot-toast';
 
 const App = () => {
   return (
     <>
-      <Navbar />
+      <Toaster />
+      <Layout />
     </>
   );
 };
