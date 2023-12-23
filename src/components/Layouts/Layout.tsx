@@ -1,20 +1,23 @@
-import Navbar from '../Navbar/Navbar';
-import RegisterModal from '../Modals/RegisterModal';
+import { Outlet } from 'react-router-dom';
 
-interface LayoutProps {
-  children?: React.ReactNode;
-}
+import Navbar from '@/components/Navbar/Navbar';
+import RegisterModal from '@/components/Modals/RegisterModal';
+import LoginModal from '@/components/Modals/LoginModal';
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+import { useGetCurrentUserQuery } from '@/app/api/usersApi';
+
+const Layout = () => {
+  const { data: user } = useGetCurrentUserQuery();
+
   return (
     <div>
+      <Navbar currentUser={user} />
+      <RegisterModal />
+      <LoginModal />
       <>
-        <Navbar />
-        <RegisterModal />
+        <Outlet />
       </>
-      {children}
     </div>
   );
 };
-
 export default Layout;

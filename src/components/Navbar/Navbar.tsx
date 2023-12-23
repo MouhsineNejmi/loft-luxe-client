@@ -1,17 +1,25 @@
 import LoftLuxeLogo from '@/components/LoftLuxeLogo';
 import Search from './Search';
 import UserMenu from './UserMenu';
+import { IUser } from '@/types/types';
+import Categories from './Categories';
 
-const Navbar = () => {
+interface UserMenuProps {
+  currentUser?: IUser | null;
+}
+
+const Navbar: React.FC<UserMenuProps> = ({ currentUser }) => {
   return (
-    <div className='fixed w-full z-10 border border-b-1'>
-      <div className='container py-4'>
-        <div className='flex flex-row items-center justify-between gap-3 md-gap-0'>
+    <div className='w-full z-10'>
+      <div className='py-4 border-b'>
+        <div className='container flex flex-row items-center justify-between gap-3 md-gap-0'>
           <LoftLuxeLogo />
           <Search />
-          <UserMenu />
+          <UserMenu currentUser={currentUser} />
         </div>
       </div>
+
+      <Categories />
     </div>
   );
 };

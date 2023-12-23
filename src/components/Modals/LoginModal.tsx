@@ -2,48 +2,50 @@
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import * as yup from 'yup';
-
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import useRegisterModal from '@/hooks/useRegisterModal';
-import { useCreateUserMutation } from '@/app/api/authApi';
-import { IRegisterMutateUser } from '@/types/types';
+import useLoginModal from '@/hooks/useLoginModal';
+import { useLoginUserMutation } from '@/app/api/authApi';
+import { ILoginMutateUser } from '@/types/types';
 
 import Modal from './Modal';
 import Heading from '../Heading';
 import Input from '../Inputs/Input';
 import Button from '../Button';
 
-const registerUserSchema = yup.object({
+const loginUserSchema = yup.object({
   username: yup.string().required(),
-  email: yup.string().email().required(),
   password: yup.string().required(),
 });
-type FormData = yup.InferType<typeof registerUserSchema>;
 
-const RegisterModal = () => {
-  const registerModal = useRegisterModal();
-  const [registerUser, { isLoading, isSuccess, isError, error }] =
-    useCreateUserMutation();
+type FormData = yup.InferType<typeof loginUserSchema>;
+
+const LoginModal = () => {
+  const navigate = useNavigate();
+  const loginModal = useLoginModal();
+  const [loginUser, { isLoading, isSuccess, isError, error }] =
+    useLoginUserMutation();
 
   const { control, handleSubmit } = useForm<FormData>({
-    resolver: yupResolver(registerUserSchema),
+    resolver: yupResolver(loginUserSchema),
     defaultValues: {
       username: '',
-      email: '',
       password: '',
     },
   });
 
   useEffect(() => {
     if (isSuccess) {
-      registerModal.onClose();
-      toast.success('User created successfully');
+      loginModal.onClose();
+      toast.success('Logged In successfully');
+      navigate(0);
     }
 
     if (isError) {
       const err = error as any;
+
       if (Array.isArray(err.data.error)) {
         err.data.error.forEach((el: any) => toast.error(el.message));
       } else {
@@ -55,27 +57,21 @@ const RegisterModal = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
-  const onSubmit: SubmitHandler<IRegisterMutateUser> = async (data) => {
-    await registerUser(data);
+  const onSubmit: SubmitHandler<ILoginMutateUser> = async (data) => {
+    await loginUser(data);
   };
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
       <Heading
-        title='Welcome To LoftLuxe'
-        subtitle='Create an account'
+        title='Welcome Back To LoftLuxe'
+        subtitle='Login to your account!'
         center={true}
       />
       <Input
         name='username'
         label='Username'
         placeholder='username'
-        control={control}
-      />
-      <Input
-        name='email'
-        label='Email'
-        placeholder='email@gmail.com'
         control={control}
       />
       <Input
@@ -106,10 +102,7 @@ const RegisterModal = () => {
 
       <div className='text-neutral-500 text-sm m-auto flex gap-1 font-lighter'>
         <h4>Already have an account?</h4>
-        <h4
-          className='cursor-pointer underline'
-          onClick={() => registerModal.onClose}
-        >
+        <h4 className='cursor-pointer underline' onClick={loginModal.onClose}>
           Login
         </h4>
       </div>
@@ -118,11 +111,11 @@ const RegisterModal = () => {
 
   return (
     <Modal
-      isOpen={registerModal.isOpen}
+      isOpen={loginModal.isOpen}
       disabled={isLoading}
-      title='Register'
-      actionLabel='Register'
-      onClose={registerModal.onClose}
+      title='Login'
+      actionLabel='Login'
+      onClose={loginModal.onClose}
       onSubmit={handleSubmit(onSubmit)}
       body={bodyContent}
       footer={footerContent}
@@ -130,4 +123,4 @@ const RegisterModal = () => {
   );
 };
 
-export default RegisterModal;
+export default LoginModal;
