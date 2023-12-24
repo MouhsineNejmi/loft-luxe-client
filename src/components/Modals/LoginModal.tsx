@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import * as yup from 'yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import useLoginModal from '@/hooks/useLoginModal';
+import useRegisterModal from '@/hooks/useRegisterModal';
 import { useLoginUserMutation } from '@/app/api/authApi';
 import { ILoginMutateUser } from '@/types/types';
 
@@ -24,6 +25,7 @@ type FormData = yup.InferType<typeof loginUserSchema>;
 
 const LoginModal = () => {
   const navigate = useNavigate();
+  const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const [loginUser, { isLoading, isSuccess, isError, error }] =
     useLoginUserMutation();
@@ -60,6 +62,11 @@ const LoginModal = () => {
   const onSubmit: SubmitHandler<ILoginMutateUser> = async (data) => {
     await loginUser(data);
   };
+
+  const toggle = useCallback(() => {
+    loginModal.onClose();
+    registerModal.onOpen();
+  }, [loginModal, registerModal]);
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
@@ -101,9 +108,9 @@ const LoginModal = () => {
       />
 
       <div className='text-neutral-500 text-sm m-auto flex gap-1 font-lighter'>
-        <h4>Already have an account?</h4>
-        <h4 className='cursor-pointer underline' onClick={loginModal.onClose}>
-          Login
+        <h4>First time using LoftLuxe?</h4>
+        <h4 className='cursor-pointer underline' onClick={toggle}>
+          Create an account
         </h4>
       </div>
     </div>

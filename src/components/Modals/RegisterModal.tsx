@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import * as yup from 'yup';
 
@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import useRegisterModal from '@/hooks/useRegisterModal';
+import useLoginModal from '@/hooks/useLoginModal';
 import { useCreateUserMutation } from '@/app/api/authApi';
 import { IRegisterMutateUser } from '@/types/types';
 
@@ -24,6 +25,7 @@ type FormData = yup.InferType<typeof registerUserSchema>;
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
   const [registerUser, { isLoading, isSuccess, isError, error }] =
     useCreateUserMutation();
 
@@ -58,6 +60,11 @@ const RegisterModal = () => {
   const onSubmit: SubmitHandler<IRegisterMutateUser> = async (data) => {
     await registerUser(data);
   };
+
+  const toggle = useCallback(() => {
+    loginModal.onOpen();
+    registerModal.onClose();
+  }, [loginModal, registerModal]);
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
@@ -106,10 +113,7 @@ const RegisterModal = () => {
 
       <div className='text-neutral-500 text-sm m-auto flex gap-1 font-lighter'>
         <h4>Already have an account?</h4>
-        <h4
-          className='cursor-pointer underline'
-          onClick={() => registerModal.onClose}
-        >
+        <h4 className='cursor-pointer underline' onClick={toggle}>
           Login
         </h4>
       </div>
