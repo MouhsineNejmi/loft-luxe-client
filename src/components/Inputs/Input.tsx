@@ -41,7 +41,7 @@ const Input: React.FC<InputProps> = ({
             {formatPrice && (
               <Icon
                 icon='bx:dollar'
-                className='text-neutral-700 absolute top-5 left-2'
+                className='text-neutral-700 absolute top-[34px] left-2'
               />
             )}
 

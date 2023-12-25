@@ -47,6 +47,7 @@ const LoginModal = () => {
 
     if (isError) {
       const err = error as any;
+      console.log(err);
 
       if (Array.isArray(err.data.error)) {
         err.data.error.forEach((el: any) => toast.error(el.message));

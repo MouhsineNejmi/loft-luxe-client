@@ -1,3 +1,4 @@
+// -------------- User Interface
 export type IUser = {
   id: string;
   username: string;
@@ -30,3 +31,32 @@ export type IAuthResponse = {
   status: string;
   user: IUser;
 };
+
+// -------------- Listing Interface
+export type IListing = {
+  title: string;
+  description: string;
+  images: string[];
+  category: string;
+  roomCount: number;
+  bathroomCount: number;
+  guestCount: number;
+  location: number[] | null;
+  price: number;
+};
+
+export type IListingResponse = {
+  status: string;
+  listing: IListing;
+};
+
+export type IListingInputs =
+  | 'images'
+  | 'category'
+  | 'location'
+  | 'guestCount'
+  | 'roomCount'
+  | 'bathroomCount'
+  | 'price'
+  | 'title'
+  | 'description';

@@ -1,8 +1,9 @@
 import LoftLuxeLogo from '@/components/LoftLuxeLogo';
 import Search from './Search';
 import UserMenu from './UserMenu';
+import Categories from '@/components/Categories/Categories';
+
 import { IUser } from '@/types/types';
-import Categories from '../Categories/Categories';
 
 interface UserMenuProps {
   currentUser?: IUser | null;
