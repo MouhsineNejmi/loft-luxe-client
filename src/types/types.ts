@@ -1,5 +1,5 @@
 // -------------- User Interface
-export type IUser = {
+export interface IUser {
   id: string;
   username: string;
   email: string;
@@ -8,8 +8,9 @@ export type IUser = {
   password: string;
   createdAt: string;
   updatedAt: string;
+  role: string;
   favoriteIds: string[];
-};
+}
 
 export type IRegisterMutateUser = {
   username: string;
@@ -33,7 +34,8 @@ export type IAuthResponse = {
 };
 
 // -------------- Listing Interface
-export type IListing = {
+export interface IListing {
+  id?: string;
   title: string;
   description: string;
   images: string[];
@@ -41,13 +43,18 @@ export type IListing = {
   roomCount: number;
   bathroomCount: number;
   guestCount: number;
-  location: number[] | null;
+  location: string;
   price: number;
-};
+}
 
 export type IListingResponse = {
   status: string;
   listing: IListing;
+};
+
+export type IListingsResponse = {
+  status: string;
+  listings: IListing[];
 };
 
 export type IListingInputs =
@@ -60,3 +67,14 @@ export type IListingInputs =
   | 'price'
   | 'title'
   | 'description';
+
+// -------------- Listing Interface
+export interface IReservation {
+  id: string;
+  userId: string;
+  listingId: string;
+  startDate: string;
+  endDate: string;
+  totalPrice: number;
+  createdAt: string;
+}

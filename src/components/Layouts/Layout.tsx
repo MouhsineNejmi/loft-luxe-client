@@ -16,9 +16,9 @@ const Layout = () => {
       <RegisterModal />
       <LoginModal />
       <RentModal />
-      <>
+      <div className='pb-20 pt-48'>
         <Outlet />
-      </>
+      </div>
     </div>
   );
 };

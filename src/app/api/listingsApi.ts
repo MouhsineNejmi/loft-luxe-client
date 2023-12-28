@@ -3,6 +3,14 @@ import { apiSlice } from './api';
 
 export const listingsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    getAllListings: builder.query<IListing[], void>({
+      query() {
+        return {
+          url: 'listings',
+        };
+      },
+      transformResponse: (result: { listings: IListing[] }) => result.listings,
+    }),
     addListing: builder.mutation<IListingResponse, IListing>({
       query(data) {
         return {
@@ -18,4 +26,4 @@ export const listingsApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useAddListingMutation } = listingsApi;
+export const { useGetAllListingsQuery, useAddListingMutation } = listingsApi;

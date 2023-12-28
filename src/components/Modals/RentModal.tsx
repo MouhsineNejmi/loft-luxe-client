@@ -13,10 +13,10 @@ import CountrySelect from '@/components/Inputs/CountrySelect';
 import Counter from '@/components/Inputs/Counter';
 import ImageUpload from '@/components/Inputs/ImageUpload';
 import Input from '@/components/Inputs/Input';
+import MapsLoading from '@/components/Skeletons/MapsLoading';
 
 import categories from '@/data/categories';
 import { IListingInputs } from '@/types/types';
-import MapsLoading from '../Skeleton/MapsLoading';
 
 enum STEPS {
   CATEGORY = 0,
@@ -57,6 +57,7 @@ const RentModal = () => {
   const bathroomCount = watch('bathroomCount');
   const images = watch('images');
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const Maps = useMemo(() => lazy(() => import('../Maps')), [location]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,7 +86,7 @@ const RentModal = () => {
         roomCount: values.roomCount,
         bathroomCount: values.bathroomCount,
         guestCount: values.guestCount,
-        location: location.latlng,
+        location: location.value,
         price: parseInt(values.price.toString()),
       });
 
@@ -158,10 +159,7 @@ const RentModal = () => {
         />
 
         <Suspense fallback={<MapsLoading />}>
-          <Maps
-            value={location}
-            onChange={(location) => setCustomValue('location', location)}
-          />
+          <Maps center={location?.latlng} />
         </Suspense>
       </div>
     );
