@@ -41,6 +41,7 @@ const RegisterModal = () => {
   useEffect(() => {
     if (isSuccess) {
       registerModal.onClose();
+      loginModal.onOpen();
       toast.success('User created successfully');
     }
 

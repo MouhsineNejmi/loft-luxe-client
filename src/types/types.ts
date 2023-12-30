@@ -82,6 +82,17 @@ export interface IReservation {
   createdAt?: string;
 }
 
+export interface IReservationWithListing {
+  id?: string;
+  userId: string;
+  listing: IListing;
+  listingId: string;
+  startDate?: Date;
+  endDate?: Date;
+  totalPrice: number;
+  createdAt?: string;
+}
+
 export type ReservationQuery = {
   userId?: string;
   listingId?: string;

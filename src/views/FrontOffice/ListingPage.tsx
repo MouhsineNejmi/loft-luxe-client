@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { differenceInDays, eachDayOfInterval } from 'date-fns';
 import { Range } from 'react-date-range';
 import toast from 'react-hot-toast';
@@ -13,13 +13,13 @@ import {
 
 import categories from '@/data/categories';
 import useLoginModal from '@/hooks/useLoginModal';
+import { IReservation } from '@/types/types';
 
 import EmptyState from '@/components/EmptyState';
 import ListingPageSkeleton from '@/components/Skeletons/ListingPageSkeleton';
 import ListingHead from '@/components/Listings/ListingHead';
 import ListingInfo from '@/components/Listings/ListingInfo';
 import ListingReservation from '@/components/Listings/ListingReservation';
-import { IReservation } from '@/types/types';
 
 const initialDateRange = {
   startDate: new Date(),
@@ -29,6 +29,7 @@ const initialDateRange = {
 
 const ListingPage = () => {
   const { listingId } = useParams();
+  const navigate = useNavigate();
   const loginModal = useLoginModal();
 
   const { data: listing, isLoading: isLoadingListingData } =
@@ -82,11 +83,20 @@ const ListingPage = () => {
 
       toast.success('Property Reserved Successfully!');
       setDateRange(initialDateRange);
-      // Redirect to trips
+      navigate('/trips');
     } catch (err) {
       toast.error('Somthing went wrong');
     }
-  }, [dateRange, listing?.id, loginModal, totalPrice, user, createReservation]);
+  }, [
+    user,
+    loginModal,
+    createReservation,
+    totalPrice,
+    dateRange.startDate,
+    dateRange.endDate,
+    listing?.id,
+    navigate,
+  ]);
 
   useEffect(() => {
     if (dateRange.startDate && dateRange.endDate) {
