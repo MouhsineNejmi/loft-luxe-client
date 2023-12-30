@@ -1,3 +1,5 @@
+import { IconType } from 'react-icons';
+
 // -------------- User Interface
 export interface IUser {
   id: string;
@@ -45,6 +47,7 @@ export interface IListing {
   guestCount: number;
   location: string;
   price: number;
+  user: IUser;
 }
 
 export type IListingResponse = {
@@ -70,11 +73,34 @@ export type IListingInputs =
 
 // -------------- Listing Interface
 export interface IReservation {
-  id: string;
+  id?: string;
   userId: string;
-  listingId: string;
-  startDate: string;
-  endDate: string;
+  listingId: string | undefined;
+  startDate?: Date;
+  endDate?: Date;
   totalPrice: number;
-  createdAt: string;
+  createdAt?: string;
 }
+
+export type ReservationQuery = {
+  userId?: string;
+  listingId?: string;
+  authorId?: string;
+};
+
+export type IReservationResponse = {
+  status: string;
+  reservation: IReservation;
+};
+
+export type IReservationsResponse = {
+  status: string;
+  reservations: IReservation[];
+};
+
+// -------------- Category Type
+export type Category = {
+  label: string;
+  icon: IconType;
+  description: string;
+};

@@ -8,7 +8,7 @@ import {
 } from '@vis.gl/react-google-maps';
 
 export type MapProps = {
-  center: number[];
+  center?: number[];
 };
 
 const Maps: React.FC<MapProps> = ({ center = [52, -0.09] }) => {

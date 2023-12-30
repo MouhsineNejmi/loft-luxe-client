@@ -11,6 +11,14 @@ export const listingsApi = apiSlice.injectEndpoints({
       },
       transformResponse: (result: { listings: IListing[] }) => result.listings,
     }),
+    getListingById: builder.query<IListing, string>({
+      query(listingId) {
+        return {
+          url: `listings/${listingId}`,
+        };
+      },
+      transformResponse: (result: { listing: IListing }) => result.listing,
+    }),
     addListing: builder.mutation<IListingResponse, IListing>({
       query(data) {
         return {
@@ -26,4 +34,8 @@ export const listingsApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetAllListingsQuery, useAddListingMutation } = listingsApi;
+export const {
+  useGetAllListingsQuery,
+  useGetListingByIdQuery,
+  useAddListingMutation,
+} = listingsApi;

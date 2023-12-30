@@ -64,7 +64,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   return (
     <div
-      onClick={() => navigate(`/listing/${listing.id}`)}
+      onClick={() => navigate(`/listings/${listing.id}`)}
       className='col-span-1 cursor-pointer group'
     >
       <div className='relative'>

@@ -31,7 +31,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   };
 
   return (
-    <div className='relative w-full aspect-square w-full relative overflow-hidden rounded-xl'>
+    <div className='relative w-full h-full aspect-square w-full relative overflow-hidden rounded-xl'>
       <img
         className='object-cover h-full w-full z-0 group-hover:scale-110 transition'
         src={images[currentImageIndex]}
