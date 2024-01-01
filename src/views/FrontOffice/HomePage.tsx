@@ -1,3 +1,7 @@
+import qs from 'query-string';
+import { useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
+
 import { useGetAllListingsQuery } from '@/app/api/listingsApi';
 import { useGetCurrentUserQuery } from '@/app/api/usersApi';
 
@@ -6,10 +10,23 @@ import ListingCard from '@/components/Listings/ListingCard';
 import ListingCardSkeleton from '@/components/Skeletons/ListingCardSkeleton';
 
 const HomePage = () => {
-  const { data: listings, isLoading } = useGetAllListingsQuery();
+  const currentQuery = useRef({});
+  const [params] = useSearchParams();
+
+  const { data: listings, isLoading } = useGetAllListingsQuery({
+    ...currentQuery.current,
+  });
   const { data: currentUser } = useGetCurrentUserQuery();
 
-  if (!listings && !isLoading) {
+  useEffect(() => {
+    if (params) {
+      currentQuery.current = qs.parse(params.toString(), {
+        parseNumbers: true,
+      });
+    }
+  }, [params]);
+
+  if (listings?.length === 0 && !isLoading) {
     return <EmptyState showReset />;
   }
 

@@ -11,8 +11,6 @@ export const reservationsApi = apiSlice.injectEndpoints({
     getReservations: builder.query<IReservationWithListing[], ReservationQuery>(
       {
         query(query) {
-          console.log(query);
-
           return {
             url: 'reservations',
             params: query,

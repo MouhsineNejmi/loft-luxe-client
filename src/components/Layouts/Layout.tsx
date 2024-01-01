@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar/Navbar';
 import RegisterModal from '@/components/Modals/RegisterModal';
 import LoginModal from '@/components/Modals/LoginModal';
 import RentModal from '../Modals/RentModal';
+import SearchModal from '../Modals/SearchModal';
 
 import { useGetCurrentUserQuery } from '@/app/api/usersApi';
 
@@ -19,6 +20,7 @@ const Layout = () => {
       <RegisterModal />
       <LoginModal />
       <RentModal />
+      <SearchModal />
       <div className={`${isMainPage ? 'pt-48' : 'pt-24'} pb-20`}>
         <Outlet />
       </div>
