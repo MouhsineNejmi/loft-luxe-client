@@ -1,11 +1,11 @@
-import Layout from '@/components/Layouts/Layout';
 import { Toaster } from 'react-hot-toast';
+import ApplicationRoutes from './routes/routes';
 
 const App = () => {
   return (
     <>
       <Toaster />
-      <Layout />
+      <ApplicationRoutes />
     </>
   );
 };

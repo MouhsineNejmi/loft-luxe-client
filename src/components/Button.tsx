@@ -21,13 +21,16 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       onClick={onClick}
       className={`
-        relative border-2 disabled:opacity-70 disabled:cursor-not-allowed text-sm py-2 font-semibold rounded-lg hover:opacity-80 transition w-full
+        relative border-2 disabled:opacity-70 flex gap-2 justify-center items-center disabled:cursor-not-allowed text-sm py-2 font-semibold rounded-lg hover:opacity-80 transition w-full
         ${outline ? 'bg-white hover:bg-black' : 'bg-crayola'}
         ${outline ? 'border-black' : 'border-crayola'}
         ${outline ? 'text-black hover:text-white' : 'text-white'}
       `}
     >
       {icon && <Icon icon={icon} className='absolute left-4 top-3' />}
+      {disabled && (
+        <Icon icon='tabler:loader-2' className='text-white animate-spin' />
+      )}
       {label}
     </button>
   );

@@ -8,7 +8,10 @@ const Avatar: React.FC<AvatarProps> = ({ src }) => {
       className='rounded-full'
       height='30'
       width='30'
-      src={src || 'https://github.com/shadcn.png'}
+      src={
+        src ||
+        'https://gravatar.com/avatar/ac447fc970080acc58f3fad587cd61c7?s=400&d=mp&r=x'
+      }
       alt='Avatar'
     />
   );

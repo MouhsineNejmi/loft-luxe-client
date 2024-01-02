@@ -1,19 +1,36 @@
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useCallback, useEffect } from 'react';
+import toast from 'react-hot-toast';
+import * as yup from 'yup';
+
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
 import useRegisterModal from '@/hooks/useRegisterModal';
+import useLoginModal from '@/hooks/useLoginModal';
+import { useCreateUserMutation } from '@/app/api/authApi';
+import { IRegisterMutateUser } from '@/types/types';
 
 import Modal from './Modal';
 import Heading from '../Heading';
 import Input from '../Inputs/Input';
 import Button from '../Button';
 
+const registerUserSchema = yup.object({
+  username: yup.string().required(),
+  email: yup.string().email().required(),
+  password: yup.string().required(),
+});
+type FormData = yup.InferType<typeof registerUserSchema>;
+
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
+  const loginModal = useLoginModal();
+  const [registerUser, { isLoading, isSuccess, isError, error }] =
+    useCreateUserMutation();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { control, handleSubmit } = useForm<FormData>({
+    resolver: yupResolver(registerUserSchema),
     defaultValues: {
       username: '',
       email: '',
@@ -21,38 +38,60 @@ const RegisterModal = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  useEffect(() => {
+    if (isSuccess) {
+      registerModal.onClose();
+      loginModal.onOpen();
+      toast.success('User created successfully');
+    }
+
+    if (isError) {
+      const err = error as any;
+      if (Array.isArray(err.data.error)) {
+        err.data.error.forEach((el: any) => toast.error(el.message));
+      } else {
+        const resMessage =
+          err.data.message || err.data.detail || err.message || err.toString();
+        toast.error(resMessage);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
+
+  const onSubmit: SubmitHandler<IRegisterMutateUser> = async (data) => {
+    await registerUser(data);
   };
+
+  const toggle = useCallback(() => {
+    loginModal.onOpen();
+    registerModal.onClose();
+  }, [loginModal, registerModal]);
 
   const bodyContent = (
     <div className='flex flex-col gap-4'>
       <Heading
-        title='Welcome To Airbnb'
+        title='Welcome To LoftLuxe'
         subtitle='Create an account'
         center={true}
       />
       <Input
-        id='username'
+        name='username'
         label='Username'
         placeholder='username'
-        {...register('username')}
-        errors={errors}
+        control={control}
       />
       <Input
-        id='email'
+        name='email'
         label='Email'
-        placeholder='email'
-        {...register('email')}
-        errors={errors}
+        placeholder='email@gmail.com'
+        control={control}
       />
       <Input
-        id='password'
+        name='password'
         type='password'
         label='Passowrd'
         placeholder='password'
-        {...register('password')}
-        errors={errors}
+        control={control}
       />
     </div>
   );
@@ -75,10 +114,7 @@ const RegisterModal = () => {
 
       <div className='text-neutral-500 text-sm m-auto flex gap-1 font-lighter'>
         <h4>Already have an account?</h4>
-        <h4
-          className='cursor-pointer underline'
-          onClick={registerModal.onClose}
-        >
+        <h4 className='cursor-pointer underline' onClick={toggle}>
           Login
         </h4>
       </div>
@@ -88,6 +124,7 @@ const RegisterModal = () => {
   return (
     <Modal
       isOpen={registerModal.isOpen}
+      disabled={isLoading}
       title='Register'
       actionLabel='Register'
       onClose={registerModal.onClose}

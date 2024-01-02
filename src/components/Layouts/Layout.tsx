@@ -1,20 +1,30 @@
-import Navbar from '../Navbar/Navbar';
-import RegisterModal from '../Modals/RegisterModal';
+import { Outlet, useLocation } from 'react-router-dom';
 
-interface LayoutProps {
-  children?: React.ReactNode;
-}
+import Navbar from '@/components/Navbar/Navbar';
+import RegisterModal from '@/components/Modals/RegisterModal';
+import LoginModal from '@/components/Modals/LoginModal';
+import RentModal from '../Modals/RentModal';
+import SearchModal from '../Modals/SearchModal';
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+import { useGetCurrentUserQuery } from '@/app/api/usersApi';
+
+const Layout = () => {
+  const { data: user } = useGetCurrentUserQuery();
+
+  const { pathname } = useLocation();
+  const isMainPage = pathname === '/';
+
   return (
     <div>
-      <>
-        <Navbar />
-        <RegisterModal />
-      </>
-      {children}
+      <Navbar currentUser={user} />
+      <RegisterModal />
+      <LoginModal />
+      <RentModal />
+      <SearchModal />
+      <div className={`${isMainPage ? 'pt-48' : 'pt-24'} pb-20`}>
+        <Outlet />
+      </div>
     </div>
   );
 };
-
 export default Layout;

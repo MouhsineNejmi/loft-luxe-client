@@ -1,17 +1,26 @@
-import AirbnbLogo from '@/components/AirbnbLogo';
+import LoftLuxeLogo from '@/components/LoftLuxeLogo';
 import Search from './Search';
 import UserMenu from './UserMenu';
+import Categories from '@/components/Categories/Categories';
 
-const Navbar = () => {
+import { IUser } from '@/types/types';
+
+interface UserMenuProps {
+  currentUser?: IUser | null;
+}
+
+const Navbar: React.FC<UserMenuProps> = ({ currentUser }) => {
   return (
-    <div className='fixed w-full z-10 border border-b-1'>
-      <div className='container py-4'>
-        <div className='flex flex-row items-center justify-between gap-3 md-gap-0'>
-          <AirbnbLogo />
+    <div className='fixed bg-white w-full z-10'>
+      <div className='py-4 border-b'>
+        <div className='container flex flex-row items-center justify-between gap-3 md-gap-0'>
+          <LoftLuxeLogo />
           <Search />
-          <UserMenu />
+          <UserMenu currentUser={currentUser} />
         </div>
       </div>
+
+      <Categories />
     </div>
   );
 };
