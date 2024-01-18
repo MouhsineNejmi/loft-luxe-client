@@ -1,13 +1,13 @@
-import { IUser } from '../../types/types';
-import { apiSlice } from './api';
+import { IUser } from "../../types/types";
+import { apiSlice } from "./api";
 
 export const usersApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getCurrentUser: builder.query<IUser, void>({
       query() {
         return {
-          url: 'users/me',
-          credentials: 'include',
+          url: "users/me",
+          credentials: "include",
         };
       },
       transformResponse: (result: { user: IUser }) => result.user,
@@ -16,8 +16,8 @@ export const usersApi = apiSlice.injectEndpoints({
       query(listingId) {
         return {
           url: `users/favorites/${listingId}`,
-          method: 'POST',
-          credentials: 'include',
+          method: "POST",
+          credentials: "include",
         };
       },
       transformResponse: (result: { user: IUser }) => result.user,
@@ -26,8 +26,8 @@ export const usersApi = apiSlice.injectEndpoints({
       query(listingId) {
         return {
           url: `users/favorites/${listingId}`,
-          method: 'DELETE',
-          credentials: 'include',
+          method: "DELETE",
+          credentials: "include",
         };
       },
       transformResponse: (result: { user: IUser }) => result.user,

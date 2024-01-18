@@ -3,8 +3,8 @@ import {
   IReservationResponse,
   IReservationWithListing,
   ReservationQuery,
-} from '@/types/types';
-import { apiSlice } from './api';
+} from "@/types/types";
+import { apiSlice } from "./api";
 
 export const reservationsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -12,9 +12,9 @@ export const reservationsApi = apiSlice.injectEndpoints({
       {
         query(query) {
           return {
-            url: 'reservations',
+            url: "reservations",
             params: query,
-            credentials: 'include',
+            credentials: "include",
           };
         },
         transformResponse: (result: {
@@ -25,10 +25,10 @@ export const reservationsApi = apiSlice.injectEndpoints({
     createReservation: builder.mutation<IReservationResponse, IReservation>({
       query(data) {
         return {
-          url: 'reservations',
-          method: 'POST',
+          url: "reservations",
+          method: "POST",
           body: data,
-          credentials: 'include',
+          credentials: "include",
         };
       },
       transformResponse: (result: { reservation: IReservationResponse }) =>
@@ -38,8 +38,8 @@ export const reservationsApi = apiSlice.injectEndpoints({
       query(reservationId) {
         return {
           url: `reservations/${reservationId}`,
-          method: 'DELETE',
-          credentials: 'include',
+          method: "DELETE",
+          credentials: "include",
         };
       },
       transformResponse: (result: { reservation: IReservationResponse }) =>

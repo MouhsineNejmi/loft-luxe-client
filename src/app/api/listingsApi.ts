@@ -1,5 +1,5 @@
-import { IListing, IListingResponse } from '@/types/types';
-import { apiSlice } from './api';
+import { IListing, IListingResponse } from "@/types/types";
+import { apiSlice } from "./api";
 
 export const listingsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -7,9 +7,8 @@ export const listingsApi = apiSlice.injectEndpoints({
     getAllListings: builder.query<IListing[], any>({
       query(query) {
         return {
-          url: 'listings',
+          url: "listings",
           params: query,
-          credentials: 'include',
         };
       },
       transformResponse: (result: { listings: IListing[] }) => result.listings,
@@ -25,8 +24,8 @@ export const listingsApi = apiSlice.injectEndpoints({
     getFavoriteListings: builder.query<IListing[], void>({
       query() {
         return {
-          url: 'listings/favorites',
-          credentials: 'include',
+          url: "listings/favorites",
+          credentials: "include",
         };
       },
       transformResponse: (result: { listings: IListing[] }) => result.listings,
@@ -34,10 +33,10 @@ export const listingsApi = apiSlice.injectEndpoints({
     addListing: builder.mutation<IListingResponse, IListing>({
       query(data) {
         return {
-          url: 'listings',
-          method: 'POST',
+          url: "listings",
+          method: "POST",
           body: data,
-          credentials: 'include',
+          credentials: "include",
         };
       },
       transformResponse: (result: { listing: IListingResponse }) =>
@@ -47,8 +46,8 @@ export const listingsApi = apiSlice.injectEndpoints({
       query(listingId) {
         return {
           url: `listings/${listingId}`,
-          method: 'DELETE',
-          credentials: 'include',
+          method: "DELETE",
+          credentials: "include",
         };
       },
       transformResponse: (result: { listing: IListingResponse }) =>

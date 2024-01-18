@@ -1,30 +1,30 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { differenceInDays, eachDayOfInterval } from 'date-fns';
-import { Range } from 'react-date-range';
-import toast from 'react-hot-toast';
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { differenceInDays, eachDayOfInterval } from "date-fns";
+import { Range } from "react-date-range";
+import toast from "react-hot-toast";
 
-import { useGetListingByIdQuery } from '@/app/api/listingsApi';
-import { useGetCurrentUserQuery } from '@/app/api/usersApi';
+import { useGetListingByIdQuery } from "@/app/api/listingsApi";
+import { useGetCurrentUserQuery } from "@/app/api/usersApi";
 import {
   useCreateReservationMutation,
   useGetReservationsQuery,
-} from '@/app/api/reservationsApi';
+} from "@/app/api/reservationsApi";
 
-import categories from '@/data/categories';
-import useLoginModal from '@/hooks/useLoginModal';
-import { IReservation } from '@/types/types';
+import categories from "@/data/categories";
+import useLoginModal from "@/hooks/useLoginModal";
+import { IReservation } from "@/types/types";
 
-import EmptyState from '@/components/EmptyState';
-import ListingPageSkeleton from '@/components/Skeletons/ListingPageSkeleton';
-import ListingHead from '@/components/Listings/ListingHead';
-import ListingInfo from '@/components/Listings/ListingInfo';
-import ListingReservation from '@/components/Listings/ListingReservation';
+import EmptyState from "@/components/EmptyState";
+import ListingPageSkeleton from "@/components/Skeletons/ListingPageSkeleton";
+import ListingHead from "@/components/Listings/ListingHead";
+import ListingInfo from "@/components/Listings/ListingInfo";
+import ListingReservation from "@/components/Listings/ListingReservation";
 
 const initialDateRange = {
   startDate: new Date(),
   endDate: new Date(),
-  key: 'selection',
+  key: "selection",
 };
 
 const ListingPage = () => {
@@ -81,11 +81,10 @@ const ListingPage = () => {
         listingId: listing?.id,
       });
 
-      toast.success('Property Reserved Successfully!');
+      toast.success("Property Reserved Successfully!");
       setDateRange(initialDateRange);
-      navigate('/trips');
     } catch (err) {
-      toast.error('Somthing went wrong');
+      toast.error("Somthing went wrong");
     }
   }, [
     user,
@@ -117,9 +116,9 @@ const ListingPage = () => {
   ) : !listing ? (
     <EmptyState />
   ) : (
-    <div className='container'>
-      <div className='max-w-screen-lg mx-auto'>
-        <div className='flex flex-col gap-6'>
+    <div className="container">
+      <div className="max-w-screen-lg mx-auto">
+        <div className="flex flex-col gap-6">
           <ListingHead
             title={listing.title}
             images={listing.images}
@@ -128,7 +127,7 @@ const ListingPage = () => {
             id={listing.id!}
           />
 
-          <div className='grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6'>
+          <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
             <ListingInfo
               user={listing.user}
               category={category}
@@ -139,7 +138,7 @@ const ListingPage = () => {
               location={listing.location}
             />
 
-            <div className='order-first mb-10 md:order-last md:col-span-3'>
+            <div className="order-first mb-10 md:order-last md:col-span-3">
               <ListingReservation
                 price={listing.price}
                 totalPrice={totalPrice!}

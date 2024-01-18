@@ -1,17 +1,17 @@
-import qs from 'query-string';
-import { Suspense, lazy, useCallback, useMemo, useState } from 'react';
-import { Range } from 'react-date-range';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { formatISO } from 'date-fns';
+import qs from "query-string";
+import { Suspense, lazy, useCallback, useMemo, useState } from "react";
+import { Range } from "react-date-range";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { formatISO } from "date-fns";
 
-import useSearchModal from '@/hooks/useSearchModal';
+import useSearchModal from "@/hooks/useSearchModal";
 
-import Modal from './Modal';
-import CountrySelect, { CountrySelectValue } from '../Inputs/CountrySelect';
-import Heading from '../Heading';
-import DatePicker from '../Inputs/DatePicker';
-import Counter from '../Inputs/Counter';
-import MapsLoading from '../Skeletons/MapsLoading';
+import Modal from "./Modal";
+import CountrySelect, { CountrySelectValue } from "../Inputs/CountrySelect";
+import Heading from "../Heading";
+import DatePicker from "../Inputs/DatePicker";
+import Counter from "../Inputs/Counter";
+import MapsLoading from "../Skeletons/MapsLoading";
 
 enum STEPS {
   LOCATION = 0,
@@ -33,11 +33,11 @@ const SearchModal = () => {
   const [dateRange, setDateRange] = useState<Range>({
     startDate: new Date(),
     endDate: new Date(),
-    key: 'selection',
+    key: "selection",
   });
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const Maps = useMemo(() => lazy(() => import('../Maps')), [location]);
+  const Maps = useMemo(() => lazy(() => import("../Maps")), [location]);
 
   const onBack = useCallback(() => {
     setStep((value) => value - 1);
@@ -75,11 +75,9 @@ const SearchModal = () => {
       updatedQuery.endDate = formatISO(dateRange.endDate);
     }
 
-    console.log('Updated Query: ', updatedQuery);
-
     const url = qs.stringifyUrl(
       {
-        url: '/',
+        url: "/",
         query: updatedQuery,
       },
       { skipNull: true }
@@ -103,10 +101,10 @@ const SearchModal = () => {
 
   const actionLabel = useMemo(() => {
     if (step === STEPS.INFO) {
-      return 'Search';
+      return "Search";
     }
 
-    return 'Next';
+    return "Next";
   }, [step]);
 
   const secondaryActionLabel = useMemo(() => {
@@ -114,14 +112,14 @@ const SearchModal = () => {
       return undefined;
     }
 
-    return 'Back';
+    return "Back";
   }, [step]);
 
   let bodyContent = (
-    <div className='flex flex-col gap-8'>
+    <div className="flex flex-col gap-8">
       <Heading
-        title='Where do you wanna go?'
-        subtitle='Find the perfect location!'
+        title="Where do you wanna go?"
+        subtitle="Find the perfect location!"
       />
       <CountrySelect
         value={location}
@@ -136,10 +134,10 @@ const SearchModal = () => {
 
   if (step === STEPS.DATE) {
     bodyContent = (
-      <div className='flex flex-col gap-8'>
+      <div className="flex flex-col gap-8">
         <Heading
-          title='When do you plan to go?'
-          subtitle='Make sure everyone is free!'
+          title="When do you plan to go?"
+          subtitle="Make sure everyone is free!"
         />
         <DatePicker
           onChange={(value) => setDateRange(value.selection)}
@@ -151,20 +149,20 @@ const SearchModal = () => {
 
   if (step === STEPS.INFO) {
     bodyContent = (
-      <div className='flex flex-col gap-8'>
-        <Heading title='More information' subtitle='Find your perfect place!' />
+      <div className="flex flex-col gap-8">
+        <Heading title="More information" subtitle="Find your perfect place!" />
         <Counter
           onChange={(value) => setGuestCount(value)}
           value={guestCount}
-          title='Guests'
-          subtitle='How many guests are coming?'
+          title="Guests"
+          subtitle="How many guests are coming?"
         />
         <hr />
         <Counter
           onChange={(value) => setRoomCount(value)}
           value={roomCount}
-          title='Rooms'
-          subtitle='How many rooms do you need?'
+          title="Rooms"
+          subtitle="How many rooms do you need?"
         />
         <hr />
         <Counter
@@ -172,8 +170,8 @@ const SearchModal = () => {
             setBathroomCount(value);
           }}
           value={bathroomCount}
-          title='Bathrooms'
-          subtitle='How many bahtrooms do you need?'
+          title="Bathrooms"
+          subtitle="How many bahtrooms do you need?"
         />
       </div>
     );
@@ -182,7 +180,7 @@ const SearchModal = () => {
   return (
     <Modal
       isOpen={searchModal.isOpen}
-      title='Filters'
+      title="Filters"
       actionLabel={actionLabel}
       onSubmit={onSubmit}
       secondaryActionLabel={secondaryActionLabel}

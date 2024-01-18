@@ -1,14 +1,15 @@
-import { useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast';
+import { useCallback, useMemo } from "react";
+import { toast } from "react-hot-toast";
 
 import {
   useAddListingToFavoritesMutation,
+  useGetCurrentUserQuery,
   useRemoveListingFromFavoritesMutation,
-} from '@/app/api/usersApi';
+} from "@/app/api/usersApi";
 
-import { IUser } from '@/types/types';
-import useLoginModal from './useLoginModal';
+import { IUser } from "@/types/types";
+
+import useLoginModal from "@/hooks/useLoginModal";
 
 type UseFavoriteProps = {
   currentUser?: IUser | null;
@@ -16,11 +17,13 @@ type UseFavoriteProps = {
 };
 
 const useFavorite = ({ currentUser, listingId }: UseFavoriteProps) => {
-  const navigate = useNavigate();
   const loginModal = useLoginModal();
 
-  const [addListingToFavorites] = useAddListingToFavoritesMutation();
-  const [removeListingFromFavorites] = useRemoveListingFromFavoritesMutation();
+  const { refetch: refetchCurrentUser } = useGetCurrentUserQuery();
+  const [addListingToFavorites, { isSuccess: isAddedToFavorite }] =
+    useAddListingToFavoritesMutation();
+  const [removeListingFromFavorites, { isSuccess: isRemovedFromFavorite }] =
+    useRemoveListingFromFavoritesMutation();
 
   const hasFavorited = useMemo(() => {
     const list = currentUser?.favoriteIds || [];
@@ -38,15 +41,21 @@ const useFavorite = ({ currentUser, listingId }: UseFavoriteProps) => {
       try {
         if (hasFavorited) {
           await removeListingFromFavorites(listingId);
-          toast.success('Listing removed from favorites successfully');
+
+          if (isRemovedFromFavorite) {
+            toast.success("Listing removed from favorites successfully");
+          }
         } else {
           await addListingToFavorites(listingId);
-          toast.success('Listing added to favorites successfully');
+
+          if (isAddedToFavorite) {
+            toast.success("Listing added to favorites successfully");
+          }
         }
 
-        navigate(0);
+        refetchCurrentUser();
       } catch (error) {
-        toast.error('Something went wrong!');
+        toast.error("Something went wrong!");
       }
     },
     [
@@ -56,7 +65,6 @@ const useFavorite = ({ currentUser, listingId }: UseFavoriteProps) => {
       loginModal,
       addListingToFavorites,
       removeListingFromFavorites,
-      navigate,
     ]
   );
 

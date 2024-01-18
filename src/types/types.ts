@@ -1,4 +1,4 @@
-import { IconType } from 'react-icons';
+import { IconType } from "react-icons";
 
 // -------------- User Interface
 export interface IUser {
@@ -47,7 +47,7 @@ export interface IListing {
   guestCount: number;
   location: string;
   price: number;
-  user: IUser;
+  user?: IUser | null;
 }
 
 export type IListingResponse = {
@@ -61,15 +61,15 @@ export type IListingsResponse = {
 };
 
 export type IListingInputs =
-  | 'images'
-  | 'category'
-  | 'location'
-  | 'guestCount'
-  | 'roomCount'
-  | 'bathroomCount'
-  | 'price'
-  | 'title'
-  | 'description';
+  | "images"
+  | "category"
+  | "location"
+  | "guestCount"
+  | "roomCount"
+  | "bathroomCount"
+  | "price"
+  | "title"
+  | "description";
 
 // -------------- Listing Interface
 export interface IReservation {

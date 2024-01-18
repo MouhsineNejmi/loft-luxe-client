@@ -1,12 +1,12 @@
-import React, { useCallback, useMemo } from 'react';
-import { format } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
-import useCountries from '@/hooks/useCountrySelect';
+import React, { useCallback, useMemo } from "react";
+import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import useCountries from "@/hooks/useCountrySelect";
 
-import { IListing, IReservation, IUser } from '@/types/types';
-import ImageCarousel from '../ImageCarousel';
-import HeartButton from '../HeartButton';
-import Button from '../Button';
+import { IListing, IReservation, IUser } from "@/types/types";
+import ImageCarousel from "../ImageCarousel";
+import HeartButton from "../HeartButton";
+import Button from "../Button";
 
 type ListingCardProps = {
   listing: IListing;
@@ -24,7 +24,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   currentUser,
   disabled,
   actionLabel,
-  actionId = '',
+  actionId = "",
   onAction,
 }) => {
   const navigate = useNavigate();
@@ -62,34 +62,34 @@ const ListingCard: React.FC<ListingCardProps> = ({
       ? reservation.endDate
       : date.setDate(date.getDate() + 1);
 
-    return `${format(start, 'PP')} - ${format(end, 'PP')}`;
+    return `${format(start, "PP")} - ${format(end, "PP")}`;
   }, [reservation]);
 
   return (
     <div
       onClick={() => navigate(`/listings/${listing.id}`)}
-      className='col-span-1 cursor-pointer group'
+      className="col-span-1 cursor-pointer group"
     >
-      <div className='relative'>
+      <div className="relative">
         <ImageCarousel images={listing.images} />
-        <div className='absolute right-2 top-2'>
+        <div className="absolute right-2 top-2">
           {listing.id && (
             <HeartButton listingId={listing.id} currentUser={currentUser} />
           )}
         </div>
       </div>
 
-      <h3 className='font-semibold text-sm text-lg mt-2 mb-1'>
+      <h3 className="font-semibold text-sm mt-2 mb-1">
         {location?.region}, {location?.label}
       </h3>
 
-      <p className='font-light text-sm text-neutral-600 mb-1'>
+      <p className="font-light text-sm text-neutral-600 mb-1">
         {reservationDate || listing.category}
       </p>
 
-      <div className='flex flex-row items-center gap-1 mb-1'>
-        <h3 className='font-semibold text-sm'>$ {price}</h3>
-        {!reservation && <p className='font-light text-sm'>/night</p>}
+      <div className="flex flex-row items-center gap-1 mb-1">
+        <h3 className="font-semibold text-sm">$ {price}</h3>
+        {!reservation && <p className="font-light text-sm">/night</p>}
       </div>
 
       {onAction && actionLabel && (

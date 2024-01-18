@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
-import axios from 'axios';
-import toast from 'react-hot-toast';
+import React, { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-import { TbPhotoPlus } from 'react-icons/tb';
-import { IoClose } from 'react-icons/io5';
+import { TbPhotoPlus } from "react-icons/tb";
+import { IoClose } from "react-icons/io5";
+import { BiLoaderAlt } from "react-icons/bi";
 
 interface ImageUploadProps {
   values: string[];
@@ -54,9 +55,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ values, onChange }) => {
       const imagesUrl = await Promise.all(
         Array.from(images).map(async (image) => {
           const formData = new FormData();
-          formData.append('file', image);
-          formData.append('cloud_name', cloud_name);
-          formData.append('upload_preset', upload_preset);
+          formData.append("file", image);
+          formData.append("cloud_name", cloud_name);
+          formData.append("upload_preset", upload_preset);
 
           const response = await axios.post(cloudinary_uri, formData);
 
@@ -71,55 +72,58 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ values, onChange }) => {
     } catch (error) {
       console.log(error);
 
-      toast.error('Something went wrong! Please try again.');
+      toast.error("Something went wrong! Please try again.");
       setIsUploadingImages(false);
     }
   };
 
   return (
-    <div className='flex flex-col gap-8'>
+    <div className="flex flex-col gap-8">
       <label
-        htmlFor='uploadImages'
-        className='relative cursor-pointer hover:opacity-70 transition border-dashed border-2 p-10 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-600'
+        htmlFor="uploadImages"
+        className="relative cursor-pointer hover:opacity-70 transition border-dashed border-2 p-10 border-neutral-300 flex flex-col justify-center items-center gap-4 text-neutral-600"
       >
         <input
-          id='uploadImages'
-          type='file'
-          accept='image/png, image/jpeg'
-          className='hidden'
+          id="uploadImages"
+          type="file"
+          accept="image/png, image/jpeg"
+          className="hidden"
           onChange={handleImageChange}
           multiple
         />
         <TbPhotoPlus size={30} />
-        <h3 className='font-semibold text-md'>Click to upload</h3>
+        <h3 className="font-semibold text-md">Click to upload</h3>
       </label>
 
       {previewImages && previewImages.length > 0 && (
         <>
           <>
-            <h3 className='font-semibold text-md mb-2'>Preview Images:</h3>
-            <div className='flex gap-4 overflow-x-auto'>
+            <h3 className="font-semibold text-md mb-2">Preview Images:</h3>
+            <div className="flex gap-4 overflow-x-auto">
               {previewImages?.map((previewImage, index) => (
-                <div className='relative' key={index}>
+                <div className="relative" key={index}>
                   <div
-                    className='absolute right-1 top-1 bg-white p-1 rounded-full shadow-lg cursor-pointer'
+                    className="absolute right-1 top-1 bg-white p-1 rounded-full shadow-lg cursor-pointer"
                     onClick={() => handleRemovePreviewImage(index)}
                   >
                     <IoClose size={20} />
                   </div>
                   <img
                     src={previewImage}
-                    className='object-cover rounded-lg bg-center w-32 h-60'
+                    className="object-cover rounded-lg bg-center w-32 h-60"
                   />
                 </div>
               ))}
             </div>
           </>
           <button
+            className="flex items-center justify-center gap-2 border border-white bg-black transition hover:bg-neutral-700 rounded-lg text-white p-2 px-4"
             disabled={isUploadingImages}
-            className='border border-white bg-black transition hover:bg-neutral-700 rounded-lg text-white p-2 px-4'
             onClick={handleUpload}
           >
+            {isUploadingImages && (
+              <BiLoaderAlt size={16} className="animate-spin" />
+            )}
             Save
           </button>
         </>
@@ -127,13 +131,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ values, onChange }) => {
 
       {values.length > 0 && (
         <>
-          <h3 className='font-semibold text-md mb-2'>Uploaded Images:</h3>
-          <div className='flex gap-4 overflow-x-auto'>
+          <h3 className="font-semibold text-md mb-2">Uploaded Images:</h3>
+          <div className="flex gap-4 overflow-x-auto">
             {values?.map((image, index) => (
-              <div className='relative' key={index}>
+              <div className="relative" key={index}>
                 <img
                   src={image}
-                  className='object-cover rounded-lg bg-center w-32 h-60'
+                  className="object-cover rounded-lg bg-center w-32 h-60"
                 />
               </div>
             ))}
